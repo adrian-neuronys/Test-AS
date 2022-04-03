@@ -139,6 +139,7 @@ if choix == "Keybert3":
     nlp = load_model('en_core_web_trf')
     summary = model(texte)
     doc = nlp(summary)
+    kw_model = KeyBERT(model=sentence_model)
     
     candidates = []
     chunks = list(doc.noun_chunks)
