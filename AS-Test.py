@@ -100,12 +100,6 @@ if choix == "Groupes Nominaux":
         troncation(chunk)
     st.write(candidats)
 
-PATH_TO_NOLEJ_MODELS = '/home/rim/nolej-models' 
-sys.path.append(PATH_TO_NOLEJ_MODELS)
-from src.models import QuestionGenerator
-
-model = QuestionGenerator(sagemaker_endpoint="inference-en-qg") 
-model(texte, answers=ANSWERS)
 
 if choix == "Keybert1":
     
