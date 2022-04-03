@@ -7,6 +7,7 @@ import allennlp_models.tagging
 import pysbd
 import re
 import sys
+import pandas as pd
 from keyphrase_vectorizers import KeyphraseCountVectorizer
 from keybert import KeyBERT
 from summarizer.sbert import SBertSummarizer
@@ -37,7 +38,7 @@ Roles = ["ARG0","ARG1","ARG2","ARG3","ARGM-ADV","ARGM-CAU","ARGM-CND","ARGM-DIR"
 
 texte = st.text_input("veuillez rentrer un texte à analyser",default_text)
 
-choix = st.selectbox("veuillez choisir une méthode de générations de reponses", ("allennlp","Groupes Nominaux","keybert1","keybert2","Keybert3"), index=1)
+choix = st.selectbox("veuillez choisir une méthode de générations de reponses", ("allennlp","Groupes Nominaux","Keybert1","Keybert2","Keybert3"), index=1)
 
 #segmentation en phrases
 seg = pysbd.Segmenter(language="en", clean=True)
@@ -102,12 +103,14 @@ if choix == "Groupes Nominaux":
 
 
 if choix == "Keybert1":
+    st.write("lol")
     
     vectorizer = KeyphraseCountVectorizer()
     model = load_KeyBert('all-MiniLM-L6-v2')
     nlp = load_model('en_core_web_trf')
     summary = model(texte)
     doc = nlp(summary)
+    st.write(summary)
     
     data = []
     colonnes = ["index","token","pos","tag"]
@@ -139,6 +142,7 @@ if choix == "Keybert3":
     nlp = load_model('en_core_web_trf')
     summary = model(texte)
     doc = nlp(summary)
+    sentence_model = load_SentenceTransformer("all-MiniLM-L6-v2")
     kw_model = KeyBERT(model=sentence_model)
     
     candidates = []
