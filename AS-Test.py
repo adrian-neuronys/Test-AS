@@ -7,6 +7,10 @@ import allennlp_models.tagging
 import pysbd
 import re
 import sys
+from keyphrase_vectorizers import KeyphraseCountVectorizer
+from keybert import KeyBERT
+from summarizer.sbert import SBertSummarizer
+from sentence_transformers import SentenceTransformer, util
 
 @st.cache(allow_output_mutation=True)
 def load_model(model):
@@ -15,6 +19,14 @@ def load_model(model):
 @st.cache(allow_output_mutation=True)
 def load_allennlp(model):
     return Predictor.from_path(model)
+
+@st.cache(allow_output_mutation=True)
+def load_KeyBert(model):
+    return SBertSummarizer(model)
+
+@st.cache(allow_output_mutation=True)
+def load_SentenceTransformer(model):
+    return SentenceTransformer(model)
 
 
 st.title("test AS")
@@ -25,7 +37,7 @@ Roles = ["ARG0","ARG1","ARG2","ARG3","ARGM-ADV","ARGM-CAU","ARGM-CND","ARGM-DIR"
 
 texte = st.text_input("veuillez rentrer un texte à analyser",default_text)
 
-choix = st.selectbox("veuillez choisir une méthode de générations de reponses", ("allennlp","Groupes Nominaux"), index=1)
+choix = st.selectbox("veuillez choisir une méthode de générations de reponses", ("allennlp","Groupes Nominaux","keybert1","keybert2","Keybert3"), index=1)
 
 #segmentation en phrases
 seg = pysbd.Segmenter(language="en", clean=True)
@@ -94,3 +106,74 @@ from src.models import QuestionGenerator
 
 model = QuestionGenerator(sagemaker_endpoint="inference-en-qg") 
 model(texte, answers=ANSWERS)
+
+if choix == "Keybert1":
+    
+    vectorizer = KeyphraseCountVectorizer()
+    model = load_KeyBert('all-MiniLM-L6-v2')
+    nlp = load_model('en_core_web_trf')
+    summary = model(texte)
+    doc = nlp(summary)
+    
+    data = []
+    colonnes = ["index","token","pos","tag"]
+    for token in doc:
+        if token.tag_[0] == 'J' or token.tag_[0] == 'N':
+            data.append([token.i,token.text,token.pos_,token.tag_])
+    df = pd.DataFrame(data, columns = colonnes)
+    st.table(df)
+    
+if choix == "Keybert2":
+    
+    vectorizer = KeyphraseCountVectorizer()
+    model = load_KeyBert('all-MiniLM-L6-v2')
+    nlp = load_model('en_core_web_trf')
+    summary = model(texte)
+    
+    sentence_model = load_SentenceTransformer("all-MiniLM-L6-v2")
+    kw_model = KeyBERT(model=sentence_model)
+    data2 = kw_model.extract_keywords(docs=summary, vectorizer=vectorizer, stop_words='english', use_mmr=True, diversity=0.7)
+    
+    st.caption("kw_model.extract_keywords(docs=summary, vectorizer=vectorizer, stop_words='english', use_mmr=True, diversity=0.7")
+    colonne = ["terme","rate"]
+    df2 = pd.DataFrame(data2, columns = colonne)
+    st.table(df2)
+    
+if choix == "Keybert3":
+    vectorizer = KeyphraseCountVectorizer()
+    model = load_KeyBert('all-MiniLM-L6-v2')
+    nlp = load_model('en_core_web_trf')
+    summary = model(texte)
+    doc = nlp(summary)
+    
+    candidates = []
+    chunks = list(doc.noun_chunks)
+
+    for chunk in chunks:
+        # check nounchunk length
+        l = len(chunk.text.split())
+        if (l > 1):
+            # filter some non interesting nounchunk with part of speech parsing
+            if (doc[chunk.start].pos_ != "DET") and (doc[chunk.start].pos_ != "PRON") and (doc[chunk.start].pos_ != "CCONJ") and (doc[chunk.start].pos_ != "PUNCT") and (doc[chunk.start].pos_ != "INTJ"):
+                st.write("lol")
+                # avoid duplicates
+                if chunk.text not in candidates:
+                    # filter some non interesting nounchunk with constituency parsing
+                    if ("JJ" not in doc[chunk.start].tag_) and ("RB" not in doc[chunk.start].tag_):
+                        candidates.append(chunk.text)
+            else:
+                # remove first word of the nounchunk
+                first, _, rest = chunk.text.partition(" ")
+                if (doc[chunk.start+1].pos_ != "DET") and (doc[chunk.start+1].pos_ != "PRON") and (doc[chunk.start+1].pos_ != "CCONJ") and (doc[chunk.start+1].pos_ != "PUNCT") and (doc[chunk.start+1].pos_ != "INTJ"):
+                    # avoid duplicates
+                    if rest not in candidates:
+                        # filter some non interesting nounchunk with constituency parsing
+                        if ("JJ" not in doc[chunk.start+1].tag_) and ("RB" not in doc[chunk.start+1].tag_):
+                            candidates.append(rest)
+    st.caption("candidates : on enleve les groupes nominaux qui commencent par un adjectif")
+    
+    st.caption("kw_model.extract_keywords(docs=summary, stop_words='english', top_n=20, candidates=candidates")
+    
+    rates = kw_model.extract_keywords(docs=summary, stop_words='english', top_n=20, candidates=candidates)
+    st.table(rates)
+    
