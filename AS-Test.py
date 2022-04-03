@@ -36,7 +36,7 @@ default_text = "Architecturally, the school has a Catholic character. Atop the M
 Roles = ["ARG0","ARG1","ARG2","ARG3","ARGM-ADV","ARGM-CAU","ARGM-CND","ARGM-DIR","ARGM-DIS","ARGM-EXT","ARGM-INS","ARGM-LOC","ARGM-MNR","ARGM-NEG","ARGM-PRED","ARGM-PRP","ARGM-TMP"]
 
 
-texte = st.text_input("veuillez rentrer un texte à analyser",default_text)
+texte = st.text_area("veuillez rentrer un texte à analyser",default_text)
 
 choix = st.selectbox("veuillez choisir une méthode de générations de reponses", ("allennlp","Groupes Nominaux","Keybert1","Keybert2","Keybert3"), index=1)
 
