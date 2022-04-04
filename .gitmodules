@@ -1,0 +1,3 @@
+[submodule "Test-AS"]
+	path = Test-AS
+	url = git@github.com:Neuronys/nolej-models.git
