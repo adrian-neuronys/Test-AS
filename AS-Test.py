@@ -14,7 +14,7 @@ from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
 print("lol")
 print(sys.path)
-PATH_TO_NOLEJ_MODELS = '/nolej-models'  
+PATH_TO_NOLEJ_MODELS = '/nolej_models'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
 print("lol")
 print(sys.path)
