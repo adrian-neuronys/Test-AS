@@ -13,7 +13,7 @@ from keybert import KeyBERT
 from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
 
-print("lol")
+!pwd
 PATH_TO_NOLEJ_MODELS = '/app/test-as/nolej_models'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
 print("lol")
