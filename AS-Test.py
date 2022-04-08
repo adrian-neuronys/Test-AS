@@ -15,6 +15,7 @@ from sentence_transformers import SentenceTransformer, util
 
 PATH_TO_NOLEJ_MODELS = './nolej_models'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
+print(sys.path)
 from src.models import QuestionGenerator
 
 @st.cache(allow_output_mutation=True)
