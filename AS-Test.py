@@ -12,7 +12,8 @@ from keyphrase_vectorizers import KeyphraseCountVectorizer
 from keybert import KeyBERT
 from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
-
+print("lol")
+print(sys.path)
 PATH_TO_NOLEJ_MODELS = '/nolej-models'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
 print("lol")
