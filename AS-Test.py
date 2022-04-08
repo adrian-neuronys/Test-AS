@@ -13,6 +13,10 @@ from keybert import KeyBERT
 from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
 
+PATH_TO_NOLEJ_MODELS = '/home/rim/Test-AS/nolej_models'  
+sys.path.append(PATH_TO_NOLEJ_MODELS)
+from src.models import QuestionGenerator
+
 @st.cache(allow_output_mutation=True)
 def load_model(model):
     return spacy.load(model)
@@ -66,7 +70,7 @@ def troncation(elt):
 
         
 def Get_role(texte,arg):
-    ANSWERS = []
+    answers = []
     for i in range(len(clean_sentences)):
         res = predictor.predict(sentence=clean_sentences[i])
         
@@ -76,7 +80,8 @@ def Get_role(texte,arg):
                 if elt.startswith(arg):
                     resu = troncation(elt)
                     if resu != None:
-                        st.write(troncation(elt))
+                        answers.append(troncation(elt))
+    return answers
         
 
 if choix == "allennlp":
@@ -84,8 +89,19 @@ if choix == "allennlp":
     st.write("Veuillez entrer le role semantique que vous souhaitez obtenir")
     arg = st.selectbox("veuillez choisir un argument semantique", (Roles), index=1)
     
-    Get_role(texte,arg)
+    Answers = Get_role(texte,arg,)
     
+    for elt in Answers:
+        st.write(elt)
+
+    ANSWERS = []
+    for elt in Answers:
+        ANSWERS.append({"text":elt})
+
+    st.caption("Les resultats de Nolej :")
+    model = QuestionGenerator(sagemaker_endpoint="inference-en-qg") 
+    st.write(model(texte, answers=ANSWERS))
+
 if choix == "Groupes Nominaux":
     doc = nlp(texte)
     candidats = []
@@ -99,11 +115,21 @@ if choix == "Groupes Nominaux":
     
     for chunk in doc.noun_chunks:
         troncation(chunk)
-    st.write(candidats)
+    for elt in candidats:
+        st.write(elt)
+        
+    ANSWERSS = []
+    for elt in candidats:
+        ANSWERSS.append({"text":str(elt)})
+    
+    """
+    st.caption("Les resultats de Nolej :")
+    model = QuestionGenerator(sagemaker_endpoint="inference-en-qg") 
+    st.write(model(texte, answers=ANSWERSS))
+    """
 
 
-if choix == "Keybert1":
-    st.write("lol")
+if choix == "Spacy":
     
     vectorizer = KeyphraseCountVectorizer()
     model = load_KeyBert('all-MiniLM-L6-v2')
