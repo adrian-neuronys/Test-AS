@@ -13,7 +13,7 @@ from keybert import KeyBERT
 from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
 
-PATH_TO_NOLEJ_MODELS = '/home/rim/Test-AS/nolej_models'  
+PATH_TO_NOLEJ_MODELS = './nolej_models'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
 from src.models import QuestionGenerator
 
