@@ -14,7 +14,7 @@ from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
 #from streamlit_multipage import MultiPage
 
-app = MultiPage()
+#app = MultiPage()
 PATH_TO_NOLEJ_MODELS = './nolej-models'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
 from src.models import QuestionGenerator
