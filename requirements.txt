@@ -15,7 +15,6 @@ streamlit-multipage==0.0.18
 sagemaker==2.85.0
 
 joblib==1.0.0
-nltk==3.5
 numpy==1.19.5
 protobuf==3.14.0
 psutil==5.8.0
@@ -28,7 +27,6 @@ transformers==4.8.2
 urllib3==1.26.2
 pysbd==0.3.4
 sentence-transformers==1.2.1
-spacy
 textrazor
 flashtext
 python-dotenv
