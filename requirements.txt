@@ -21,10 +21,8 @@ pyparsing==2.4.7
 requests==2.25.1
 sentencepiece==0.1.95
 tokenizers==0.10.3
-torch==1.7.1
 transformers
 urllib3==1.26.2
-pysbd==0.3.4
 sentence-transformers==1.2.1
 textrazor
 flashtext
