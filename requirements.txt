@@ -13,7 +13,6 @@ keyphrase-vectorizers==0.0.7
 bert-extractive-summarizer==0.10.1
 streamlit-multipage==0.0.18
 sagemaker==2.85.0
-
 joblib==1.0.0
 numpy==1.19.5
 protobuf==3.14.0
