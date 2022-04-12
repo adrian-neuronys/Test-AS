@@ -13,9 +13,10 @@ from keybert import KeyBERT
 from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
 
-PATH_TO_NOLEJ_MODELS = '/requirements'  
+PATH_TO_NOLEJ_MODELS = '/app/test_multi/test_multi.py'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
-from src.models import QuestionGenerator
+#from src.models import QuestionGenerator
+st.write(sys.path)
 
 @st.cache(allow_output_mutation=True)
 def load_model(model):
