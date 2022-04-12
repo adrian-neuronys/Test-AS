@@ -24,7 +24,6 @@ requests==2.25.1
 sentencepiece==0.1.95
 tokenizers==0.10.3
 torch==1.7.1
-tqdm==4.56.0
 transformers==4.8.2
 urllib3==1.26.2
 pysbd==0.3.4
