@@ -7,7 +7,7 @@ benepar==0.2.0
 checklist==0.0.11
 click==8
 https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.2.0/en_core_web_trf-3.2.0-py3-none-any.whl
-streamlit==1.4.0
+streamlit
 keybert==0.5.1
 keyphrase-vectorizers==0.0.7
 bert-extractive-summarizer==0.10.1
