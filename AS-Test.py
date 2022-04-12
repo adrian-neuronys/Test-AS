@@ -12,16 +12,16 @@ from keyphrase_vectorizers import KeyphraseCountVectorizer
 from keybert import KeyBERT
 from summarizer.sbert import SBertSummarizer
 from sentence_transformers import SentenceTransformer, util
-from streamlit_multipage import MultiPage
+#from streamlit_multipage import MultiPage
 
 app = MultiPage()
-PATH_TO_NOLEJ_MODELS = '/app/test_multi/test_multi.py'  
+PATH_TO_NOLEJ_MODELS = './nolej-models'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
-#from src.models import QuestionGenerator
-st.write(sys.path)
-from test_multi import my_page
+from src.models import QuestionGenerator
+#st.write(sys.path)
+#from test_multi import my_page
 
-app.add_app("Hello World", my_page) 
+#app.add_app("Hello World", my_page) 
 
 @st.cache(allow_output_mutation=True)
 def load_model(model):
