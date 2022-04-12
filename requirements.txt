@@ -11,3 +11,4 @@ streamlit==1.4.0
 keybert==0.5.1
 keyphrase-vectorizers==0.0.7
 bert-extractive-summarizer==0.10.1
+streamlit-multipage==0.0.18
