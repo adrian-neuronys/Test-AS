@@ -15,8 +15,7 @@ from sentence_transformers import SentenceTransformer, util
 
 PATH_TO_NOLEJ_MODELS = '/requirements'  
 sys.path.append(PATH_TO_NOLEJ_MODELS)
-print(sys.path)
-#from src.models import QuestionGenerator
+from src.models import QuestionGenerator
 
 @st.cache(allow_output_mutation=True)
 def load_model(model):
